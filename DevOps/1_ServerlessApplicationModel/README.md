@@ -25,7 +25,7 @@ Below is a code snippet from the SAM template to list Unicorns:
     Type: 'AWS::Serverless::Function'
     Properties:
       FunctionName: 'uni-api-list'
-      Runtime: nodejs6.10
+      Runtime: nodejs8.10
       CodeUri: app
       Handler: list.lambda_handler
       Description: List Unicorns
@@ -47,7 +47,7 @@ The **FunctionName** property defines a custom name for the Lambda function.  If
 
 #### Runtime
 
-The example API shown above is implemented in **Node.js 6.10**.  Additional runtimes are available for AWS Lambda.  Please refer to the [Lambda Execution Environment and Available Libraries](http://docs.aws.amazon.com/lambda/latest/dg/current-supported-versions.html) for the complete list.
+The example API shown above is implemented in **Node.js 8.10**.  Additional runtimes are available for AWS Lambda.  Please refer to the [Lambda Execution Environment and Available Libraries](http://docs.aws.amazon.com/lambda/latest/dg/current-supported-versions.html) for the complete list.
 
 #### CodeUri
 
@@ -110,6 +110,7 @@ Using your preferred Git client, run the commands on your local `uni-api` Git re
 git fetch --all
 git reset --hard origin/master
 ```
+
 
 ## AWS SAM CLI
 

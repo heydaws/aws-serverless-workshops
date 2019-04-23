@@ -64,7 +64,7 @@ Make sure to configure your function to use the `WildRydesLambda` IAM role you c
 
 1. Click **Create function**.
 
-1. Select **Node.js 6.10** for the **Runtime**.
+1. Select **Node.js 8.10** for the **Runtime**.
 
 1. Copy and paste the code from [listUnicornRides.js](./listUnicornRides.js?raw=1) into the code entry area.
 
@@ -105,7 +105,7 @@ Make sure to configure your function to use the **WildRydesLambda** IAM role you
 
 1. Change the **Code entry type** to **Upload a .ZIP file**.
 
-1. Select **Node.js 6.10** for the **Runtime**.
+1. Select **Node.js 8.10** for the **Runtime**.
 
 1. Leave the default of **index.handler** for the **Handler** field.
 
