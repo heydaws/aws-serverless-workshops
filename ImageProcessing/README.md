@@ -17,7 +17,8 @@ When users upload the photo of themselves, a few steps of verification and proce
 1. Index the user's face into the collection so it can be used for matching in the future. 
 1. Store the photo metadata with the user's profile.  
 
-In the serverless world, each of steps above can be easily implemented with a AWS Lambda function. But how can we manage the flow of invoking one Lambda function after the previous step has finished and keep track of what happened with each image? What if one of the Lambda function times out and needs to be retried? Some of the Lambda functions can be run in parallel to reduce end-to-end processing latency, how can we coordinate running Lambda functions in parallel and wait for them to finish? AWS Step Functions makes it very easy to solve these problems and provides an audit trail and visualization to track what happened with each flow. 
+In the serverless world, each of steps above can be easily implemented with a AWS Lambda function. But how can we manage the flow of invoking one Lambda function after the previous step has finished and keep track of what happened with each image? What if one of the Lambda function times out and needs to be retried? Some of the Lambda functions can be run in parallel to reduce end-to-end processing latency, how can we coordinate running Lambda functions in parallel and wait for them to finish? AWS Step Functions makes it very easy to solve these problems and provides an audit trail and visualization to track what happened with each flow. 
+
 ## Architecture Overview
 The architecture for this module is composed of several AWS Lambda functions that leverage the facial detection capabilities of **Amazon Rekognition**, resize the uploaded image stored in **Amazon S3**, and save the image metadata with the user profile using **Amazon DynamoDB**. The orchestration of these Lambda functions is managed by an **AWS Step Functions**  state machine.
 
@@ -27,7 +28,8 @@ Below is the flow diagram of the workflow we will build as visualized by  **AWS 
 
 <img src="./images/4th-state-machine-graph.png" width="60%">
 
-In this module, we will manually kick-off processing workflows from the AWS Step Functions management console. In a real world application, you can configure an Amazon API Gateway that your application invokes to trigger the Step Functions state machine, or have it triggered by an Amazon S3 upload event through Amazon CloudWatch Events or S3 event notifications. 
+In this module, we will manually kick-off processing workflows from the AWS Step Functions management console. In a real world application, you can configure an Amazon API Gateway that your application invokes to trigger the Step Functions state machine, or have it triggered by an Amazon S3 upload event through Amazon CloudWatch Events or S3 event notifications. 
+
 ## Implementation Instructions
 
 Each of the following sections provide an implementation overview and detailed, step-by-step instructions. The overview should provide enough context for you to complete the implementation if you're already familiar with the AWS Management Console or you want to explore the services yourself without following a walkthrough.
@@ -69,8 +71,10 @@ Using the AWS Command Line Interface, create a collection in the Amazon Rekognit
 
 ### 2. Deploy Amazon S3, AWS Lambda and Amazon DynamoDB resources using AWS CloudFormation
 
-The following AWS CloudFormation template will create these resources:
-* Two Amazon S3 buckets: 	* **RiderPhotoS3Bucket** stores the photos uploaded by the riders
+The following AWS CloudFormation template will create these resources:
+
+* Two Amazon S3 buckets: 
+	* **RiderPhotoS3Bucket** stores the photos uploaded by the riders
 	* A few test images will be copied into the **RiderPhotoS3Bucket**  bucket
 	* **ThumbnailS3Bucket** stores the resized thumbnails of the rider photos
 * One Amazon DynamoDB table **RiderPhotoDDBTable** that stores the metadata of the rider's photo with rider's profile
@@ -304,7 +308,7 @@ If the uploaded photo has passed the basic face detection checks, the next step 
 	  "States": {
 	    "FaceDetection": {
 	      "Type": "Task",
-	      "Resource": "arn:aws:lambda:us-west-2:012345678912:function:wild-ryde-step-module-FaceDetectionFunction-4AYSKX2EGPV0",
+	      "Resource": "REPLACE_WITH_FaceDetectionFunctionArn",
 	      "ResultPath": "$.detectedFaceDetails",
 	      "Next": "CheckFaceDuplicate",
 	      "Catch": [
@@ -319,12 +323,12 @@ If the uploaded photo has passed the basic face detection checks, the next step 
 	    },
 	    "PhotoDoesNotMeetRequirement": {
 	      "Type": "Task",
-	      "Resource": "arn:aws:lambda:us-west-2:012345678912:function:wild-ryde-step-module-NotificationPlaceholderFunct-CDRLZC8BRFWP",
+	      "Resource": "REPLACE_WITH_NotificationPlaceholderFunctionArn",
 	      "End": true
 	    },
 	    "CheckFaceDuplicate": {
 	      "Type": "Task",
-	      "Resource": "arn:aws:lambda:us-west-2:012345678912:function:wild-ryde-step-module-FaceSearchFunction-1IT67V4J214DC",
+	      "Resource": "REPLACE_WITH_FaceSearchFunctionArn",
 	      "ResultPath": null,
 	      "End": true,
 	      "Catch": [
@@ -439,7 +443,7 @@ The ARNs of the two AWS Lambda functions that performs face index and generate t
 	  "States": {
 	    "FaceDetection": {
 	      "Type": "Task",
-	      "Resource": "arn:aws:lambda:us-west-2:012345678912:function:wild-ryde-step-module-FaceDetectionFunction-4AYSKX2EGPV0",
+	      "Resource": "REPLACE_WITH_FaceDetectionFunctionArn",
 	      "ResultPath": "$.detectedFaceDetails",
 	      "Next": "CheckFaceDuplicate",
 	      "Catch": [
@@ -454,12 +458,12 @@ The ARNs of the two AWS Lambda functions that performs face index and generate t
 	    },
 	    "PhotoDoesNotMeetRequirement": {
 	      "Type": "Task",
-	      "Resource": "arn:aws:lambda:us-west-2:012345678912:function:wild-ryde-step-module-NotificationPlaceholderFunct-CDRLZC8BRFWP",
+	      "Resource": "REPLACE_WITH_NotificationPlaceholderFunctionArn",
 	      "End": true
 	    },
 	    "CheckFaceDuplicate": {
 	      "Type": "Task",
-	      "Resource": "arn:aws:lambda:us-west-2:012345678912:function:wild-ryde-step-module-FaceSearchFunction-1IT67V4J214DC",
+	      "Resource": "REPLACE_WITH_FaceSearchFunctionArn",
 	      "ResultPath": null,
 	      "Next": "ParallelProcessing",
 	      "Catch": [
@@ -480,7 +484,7 @@ The ARNs of the two AWS Lambda functions that performs face index and generate t
 	          "States": {
 	            "AddFaceToIndex": {
 	              "Type": "Task",
-	              "Resource": "arn:aws:lambda:us-west-2:012345678912:function:wild-ryde-step-module-IndexFaceFunction-15658V8WUI67V",
+	              "Resource": "REPLACE_WITH_IndexFaceFunctionArn",
 	              "End": true
 	            }
 	          }
@@ -490,7 +494,7 @@ The ARNs of the two AWS Lambda functions that performs face index and generate t
 	          "States": {
 	            "Thumbnail": {
 	              "Type": "Task",
-	              "Resource": "arn:aws:lambda:us-west-2:012345678912:function:wild-ryde-step-module-ThumbnailFunction-A30TCJMIG0U8",
+	              "Resource": "REPLACE_WITH_ThumbnailFunctionArn",
 	              "End": true
 	            }
 	          }
@@ -596,7 +600,7 @@ The ARN of the AWS Lambda function that persists the metadata can be found in th
 	  "States": {
 	    "FaceDetection": {
 	      "Type": "Task",
-	      "Resource": "arn:aws:lambda:us-west-2:012345678912:function:wild-ryde-step-module-FaceDetectionFunction-4AYSKX2EGPV0",
+	      "Resource": "REPLACE_WITH_FaceDetectionFunctionArn",
 	      "ResultPath": "$.detectedFaceDetails",
 	      "Next": "CheckFaceDuplicate",
 	      "Catch": [
@@ -611,12 +615,12 @@ The ARN of the AWS Lambda function that persists the metadata can be found in th
 	    },
 	    "PhotoDoesNotMeetRequirement": {
 	      "Type": "Task",
-	      "Resource": "arn:aws:lambda:us-west-2:012345678912:function:wild-ryde-step-module-NotificationPlaceholderFunct-CDRLZC8BRFWP",
+	      "Resource": "REPLACE_WITH_NotificationPlaceholderFunctionArn",
 	      "End": true
 	    },
 	    "CheckFaceDuplicate": {
 	      "Type": "Task",
-	      "Resource": "arn:aws:lambda:us-west-2:012345678912:function:wild-ryde-step-module-FaceSearchFunction-1IT67V4J214DC",
+	      "Resource": "REPLACE_WITH_FaceSearchFunctionArn",
 	      "ResultPath": null,
 	      "Next": "ParallelProcessing",
 	      "Catch": [
@@ -637,7 +641,7 @@ The ARN of the AWS Lambda function that persists the metadata can be found in th
 	          "States": {
 	            "AddFaceToIndex": {
 	              "Type": "Task",
-	              "Resource": "arn:aws:lambda:us-west-2:012345678912:function:wild-ryde-step-module-IndexFaceFunction-15658V8WUI67V",
+	              "Resource": "REPLACE_WITH_IndexFaceFunctionArn",
 	              "End": true
 	            }
 	          }
@@ -647,7 +651,7 @@ The ARN of the AWS Lambda function that persists the metadata can be found in th
 	          "States": {
 	            "Thumbnail": {
 	              "Type": "Task",
-	              "Resource": "arn:aws:lambda:us-west-2:012345678912:function:wild-ryde-step-module-ThumbnailFunction-A30TCJMIG0U8",
+	              "Resource": "REPLACE_WITH_ThumbnailFunctionArn",
 	              "End": true
 	            }
 	          }
@@ -658,7 +662,7 @@ The ARN of the AWS Lambda function that persists the metadata can be found in th
 	    },
 	    "PersistMetadata": {
 	      "Type": "Task",
-	      "Resource": "arn:aws:lambda:us-west-2:012345678912:function:wild-ryde-step-module-PersistMetadataFunction-9PDCT2DT7K70",
+	      "Resource": "REPLACE_WITH_PersistMetadataFunctionArn",
 	      "ResultPath": null,
 	      "End": true
 	    }
