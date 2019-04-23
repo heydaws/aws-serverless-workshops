@@ -4,6 +4,9 @@ In this module you'll create an Amazon Cognito user pool to manage your users' a
 
 If you want to skip ahead to the next module, you can launch one of these AWS CloudFormation templates in the Region of your choice in order to build the necessary resources automatically.
 
+<details>
+<summary><strong>CloudFormation short-cuts</strong></summary><p>
+
 Region| Launch
 ------|-----
 US East (N. Virginia) | [![Launch Module 2 in us-east-1](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/images/cloudformation-launch-stack-button.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=wildrydes-webapp-2&templateURL=https://s3.amazonaws.com/wildrydes-us-east-1/WebApplication/2_UserManagement/user-management.yaml)
@@ -42,6 +45,7 @@ Asia Pacific (Mumbai) | [![Launch Module 2 in ap-south-1](http://docs.aws.amazon
 1. Follow the steps outlined in the [Implementation Verification](#implementation-verification) section to confirm you are ready to move on to the next module.
 
 </p></details>
+</details>
 
 ## Architecture Overview
 

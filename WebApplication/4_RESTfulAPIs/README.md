@@ -12,6 +12,10 @@ This module will focus on the steps required to build the cloud components of th
 
 If you want to skip ahead to the next module, you can launch one of these AWS CloudFormation templates in the Region of your choice in order to build the necessary resources automatically.
 
+<details>
+<summary><strong>CloudFormation short-cuts</strong></summary><p>
+
+
 Region| Launch
 ------|-----
 US East (N. Virginia) | [![Launch Module 4 in us-east-1](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/images/cloudformation-launch-stack-button.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=wildrydes-webapp-4&templateURL=https://s3.amazonaws.com/wildrydes-us-east-1/WebApplication/4_RESTfulAPIs/backend-api.yaml)
@@ -50,6 +54,7 @@ Asia Pacific (Mumbai) | [![Launch Module 4 in ap-south-1](http://docs.aws.amazon
 1. Verify the Wild Rydes home page is loading properly and try to request a ride.
 
 </p></details>
+</details>
 
 ## Implementation Instructions
 

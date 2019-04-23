@@ -4,6 +4,10 @@ In this module you'll configure Amazon Simple Storage Service (S3) to host the s
 
 If you're already comfortable working with Amazon S3, or you just want to skip ahead to working with Lambda and API Gateway, you can launch one of these AWS CloudFormation templates in the Region of your choice to build the necessary resources automatically.
 
+<details>
+<summary><strong>CloudFormation short-cuts</strong></summary><p>
+
+
 Region| Launch
 ------|-----
 US East (N. Virginia) | [![Launch Module 1 in us-east-1](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/images/cloudformation-launch-stack-button.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=wildrydes-webapp-1&templateURL=https://s3.amazonaws.com/wildrydes-us-east-1/WebApplication/1_StaticWebHosting/webapp-static-hosting.yaml)
@@ -44,6 +48,7 @@ Asia Pacific (Mumbai) | [![Launch Module 1 in ap-south-1](http://docs.aws.amazon
 
 </p></details>
 
+</details>
 
 ## Architecture Overview
 
